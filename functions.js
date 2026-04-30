@@ -1093,11 +1093,11 @@
 				}
 				else if((boss == "tiresome") && (current_play.length)){
 					for(var i = 0; i < current_play.length; i++) if(current_play[i]) break;
-					if((i < current_play.length) && (current_play[i] != hand)) current_score.push(0);
+					if((i < current_play.length) && (current_play[i] != hand)) current_score.splice(-1, 1, 0);
 				}
 				else if((boss == "alternative") && (current_play.length)){
 					for(var i = 0; i < current_play.length; i++) if(current_play[i] == hand) break;
-					if((i < current_play.length) && (current_play[i] == hand)) current_score.push(0);
+					if((i < current_play.length) && (current_play[i] == hand)) current_score.splice(-1, 1, 0);
 				}
 				
 				total_score += current_score.at(-1);
