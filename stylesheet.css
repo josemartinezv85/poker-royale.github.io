@@ -334,8 +334,8 @@
 		background: url("img/token.png") 2% center / 5% no-repeat, url("img/token.png") 98% center / 5% no-repeat;
 	}
 	div#game div#game_header.button{ height: 8%; border-radius: 6px; background-position: top; }
-	div#game div#game_header.small_blind{ background-color: #000066; }
-	div#game div#game_header.big_blind{ background-color: #660066; }
+	div#game div#game_header.small_blind{ background-color: #000099; }
+	div#game div#game_header.big_blind{ background-color: #990099; }
 	div#game div#game_header.boss_blind{
 		background: url("img/token.png") 2% center / 5% no-repeat, url("img/token.png") 98% center / 5% no-repeat, linear-gradient(#dd0000, #bb0000 25%) center bottom / 100% 200%;
 		transition: all 0.2s;
