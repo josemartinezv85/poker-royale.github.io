@@ -36,6 +36,10 @@
 	var tokens;
 	var cards;
 	var dice = 1;
+	var die_0 = 0;
+	var randomizer_hand = 0;
+	var randomizer_card = 0;
+	var randomizer_suit = 0;
 	var saved_plays, saved_discards;
 	var defeated_blinds, not_defeated_blinds;
 	var total_score;
@@ -74,6 +78,10 @@
 		Cookies.remove("PokerRoyale_nofigures");
 		Cookies.remove("PokerRoyale_balanced");
 		Cookies.remove("PokerRoyale_dice");
+		Cookies.remove("PokerRoyale_die0");
+		Cookies.remove("PokerRoyale_randomizer_hand");
+		Cookies.remove("PokerRoyale_randomizer_card");
+		Cookies.remove("PokerRoyale_randomizer_suit");
 		Cookies.remove("PokerRoyale_boss");
 	}
 	
@@ -109,6 +117,10 @@
 			Cookies.set("PokerRoyale_nofigures", nofigures, { expires: 7 });
 			Cookies.set("PokerRoyale_balanced", balanced, { expires: 7 });
 			Cookies.set("PokerRoyale_dice", dice, { expires: 7 });
+			Cookies.set("PokerRoyale_die_0", die_0, { expires: 7});
+			Cookies.set("PokerRoyale_randomizer_hand", randomizer_hand, { expires: 7});
+			Cookies.set("PokerRoyale_randomizer_card", randomizer_card, { expires: 7});
+			Cookies.set("PokerRoyale_randomizer_suit", randomizer_suit, { expires: 7});
 			Cookies.set("PokerRoyale_boss", boss, { expires: 7 });
 		}
 		else delete_game();
@@ -140,6 +152,10 @@
 			nofigures = (Cookies.get("PokerRoyale_nofigures") === "true");
 			balanced = (Cookies.get("PokerRoyale_balanced") === "true");
 			dice = parseInt(Cookies.get("PokerRoyale_dice"));
+			die_0 = parseInt(Cookies.get("PokerRoyale_die_0"));
+			randomizer_hand = parseInt(Cookies.get("PokerRoyale_randomizer_hand"));
+			randomizer_card = parseInt(Cookies.get("PokerRoyale_randomizer_card"));
+			randomizer_suit = parseInt(Cookies.get("PokerRoyale_randomizer_suit"));
 			boss = Cookies.get("PokerRoyale_boss");
 			if(!isNaN(parseInt(boss))) boss = parseInt(boss);
 			
@@ -867,6 +883,17 @@
 		hide($("#hands_form"));
 	}
 	
+	function get_card(card){
+		switch(card){
+			case 13: card = "K"; break;
+			case 12: card = "Q"; break;
+			case 11: card = "J"; break;
+			case 1: card = "A"; break;
+			default: break;
+		}
+		return(card);
+	}
+	
 	function get_label(h, abbr = false, warning = false){
 		var label;
 		switch(h){
@@ -1210,12 +1237,20 @@
 				$("#game #dice_switch").attr("class", "teseract");
 			}
 			else if($("#game #dice_switch").hasClass("teseract")){
-				$("#game #die_1").before("<span id='die_0' class='die'>&#63;</span>");
+				$("#game #die_1").before("<span id='die_0' class='die'></span>");
+				$("#game #die_0").html(die_0 ? die_0 : "&#63;");
 				$("#game #dice_switch").attr("class", "randomizer");
 			}
 			else{
 				$("#game #die_0").addClass("randomizer");
-				$("#game #die_0").html("<span id='randomizer_hand' class='empty'></span><span id='randomizer_label'></span><span id='randomizer_suit' class='empty'></span>");
+				$("#game #die_0").html("<span id='randomizer_hand' class='empty'></span><span id='randomizer_label'></span><span id='randomizer_card'>&#63;</span><span id='randomizer_suit' class='empty'></span>");
+				if(randomizer_hand){
+					$("#game #die_0 #randomizer_hand").removeClass("empty");
+					$("#game #die_0 #randomizer_hand").css("background-image", "url('img/sample_" + randomizer_hand + ".png')");
+					$("#game #die_0 #randomizer_label").text(get_label(randomizer_hand));
+					$("#game #die_0 #randomizer_card").text(get_card(randomizer_card));
+					$("#game #die_0 #randomizer_suit").attr("class", "suit_" + randomizer_suit);
+				}
 				$("#game #dice_switch").attr("class", "regular");
 			}
 		}
@@ -1255,14 +1290,19 @@
 		if(times){
 			setTimeout(function(){
 				if(die) $("#game #die_" + die).attr("class", "die_" + (1 + Math.floor(Math.random() * 12)));
-				else if(!$("#game #die_0").hasClass("randomizer")) $("#game #die_0").text(Math.floor(Math.random() * 26));
+				else if(!$("#game #die_0").hasClass("randomizer")){
+					die_0 = Math.floor(Math.random() * 26)
+					$("#game #die_0").text(die_0);
+				}
 				else{
-					var rand_hand = 1 + Math.floor(Math.random() * 12);
-					$("#game #die_0 #randomizer_hand").css("background-image", "url('img/sample_" + rand_hand + ".png')");
-					$("#game #die_0 #randomizer_hand").css("opacity", "0.5");
-					$("#game #die_0 #randomizer_hand").css("background-size", "auto 30%");
-					$("#game #die_0 #randomizer_label").text(get_label(rand_hand));
-					$("#game #die_0 #randomizer_suit").attr("class", "suit_" + Math.floor(Math.random() * 4));
+					randomizer_hand = 1 + Math.floor(Math.random() * 12);
+					randomizer_card = 1 + Math.floor(Math.random() * 13);
+					randomizer_suit = 1 + Math.floor(Math.random() * 4);
+					$("#game #die_0 #randomizer_hand").removeClass("empty");
+					$("#game #die_0 #randomizer_hand").css("background-image", "url('img/sample_" + randomizer_hand + ".png')");
+					$("#game #die_0 #randomizer_label").text(get_label(randomizer_hand));
+					$("#game #die_0 #randomizer_card").text(get_card(randomizer_card));
+					$("#game #die_0 #randomizer_suit").attr("class", "suit_" + randomizer_suit);
 				}
 				$("#game #die_" + die).addClass("rolling");
 				roll_die(die, times - 1);
