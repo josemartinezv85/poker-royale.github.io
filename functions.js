@@ -13,7 +13,7 @@
 	const inc_points = new Array();
 	const inc_multi = new Array();
 	
-	points[1] = 5;		multi[1] = 1;		inc_points[1] = 10;		inc_multi[1] = 1;	//	5		1		10	1
+	points[1] = 5;		multi[1] = 1;		inc_points[1] = 10;		inc_multi[1] = 1;	//	5	1		10	1
 	points[2] = 10;		multi[2] = 2;		inc_points[2] = 15;		inc_multi[2] = 1;	//	10	2		15	1
 	points[3] = 20;		multi[3] = 2;		inc_points[3] = 20;		inc_multi[3] = 1;	//	20	2		20	1
 	points[4] = 30;		multi[4] = 3;		inc_points[4] = 20;		inc_multi[4] = 2;	//	30	3		20	2
@@ -21,10 +21,10 @@
 	points[6] = 35;		multi[6] = 4;		inc_points[6] = 25;		inc_multi[6] = 2;	//	35	4		15	2
 	points[7] = 40;		multi[7] = 4;		inc_points[7] = 30;		inc_multi[7] = 2;	//	40	4		25	2
 	points[8] = 60;		multi[8] = 6;		inc_points[8] = 30;		inc_multi[8] = 3;	//	60	7		30	3
-	points[9] = 80;		multi[9] = 8;		inc_points[9] = 40;		inc_multi[9] = 3;	// 100	8		40	4
-	points[10] = 100;	multi[10] = 10;	inc_points[10] = 40;		inc_multi[10] = 4;	//	120	12	35	3
-	points[11] = 120;	multi[11] = 12;	inc_points[11] = 40;		inc_multi[11] = 5;	//	140	14	40	4
-	points[12] = 150;	multi[12] = 15;	inc_points[12] = 50;		inc_multi[12] = 5;	//	160	16	50	3
+	points[9] = 80;		multi[9] = 8;		inc_points[9] = 40;		inc_multi[9] = 3;	//	100	8		40	4
+	points[10] = 100;	multi[10] = 10;		inc_points[10] = 40;	inc_multi[10] = 4;	//	120	12		35	3
+	points[11] = 120;	multi[11] = 12;		inc_points[11] = 40;	inc_multi[11] = 5;	//	140	14		40	4
+	points[12] = 150;	multi[12] = 15;		inc_points[12] = 50;	inc_multi[12] = 5;	//	160	16		50	3
 	
 	var level = new Array();
 	var plays = new Array();
@@ -691,7 +691,7 @@
 			refresh();
 			activate($("#levels #max_discards"));
 		}
-		else if((inc > 0) || (max_discards > 1)){
+		else if((inc > 0) || (max_discards > 0)){
 			max_discards += inc;
 			if(!max_discards) disable($("#levels #max_discards .button.down"));
 			else enable($("#levels #max_discards .button.down"));
@@ -946,6 +946,7 @@
 			$("#multi_form #multi_string").text(string);
 			$("#multi_form #multi_close").text(get_multi().toLocaleString());
 			$("#play #play_multi").text(get_multi().toLocaleString());
+			$("#play_confirm").text(get_score().toLocaleString());
 			
 			deactivate($("#points_reset"));
 		}
@@ -990,6 +991,7 @@
 			$("#points_form #points_string").text(string);
 			$("#points_form #points_close").text(get_points().toLocaleString());
 			$("#play #play_points").text(get_points().toLocaleString());
+			$("#play_confirm").text(get_score().toLocaleString());
 			
 			deactivate($("#multi_reset"));
 		}
